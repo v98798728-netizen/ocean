@@ -1,3 +1,5 @@
+// src/services/AIService.ts
+
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -16,8 +18,7 @@ class AIService {
   private model: string;
 
   constructor() {
-    // 👇 No API key in frontend anymore
-    this.baseUrl = '/api'; 
+    this.baseUrl = '/api'; // frontend calls backend in Bolt
     this.model = 'nvidia/llama-3.1-nemotron-70b-instruct';
   }
 
@@ -31,7 +32,7 @@ class AIService {
           messages: [
             {
               role: 'system',
-              content: `You are Shark AI, a specialized marine data assistant. You help users analyze oceanographic data, identify marine species, interpret eDNA results, and provide insights about marine ecosystems.`
+              content: `You are Shark AI, a marine data assistant.`
             },
             ...messages
           ],
@@ -61,31 +62,19 @@ class AIService {
   }
 
   async analyzeMarineData(dataType: string, query: string): Promise<string> {
-    const messages: ChatMessage[] = [
-      { role: 'user', content: `As a marine data specialist, please analyze this ${dataType} query: ${query}.` }
-    ];
-    return this.sendMessage(messages);
+    return this.sendMessage([{ role: 'user', content: `Analyze this ${dataType}: ${query}` }]);
   }
 
   async identifySpecies(description: string): Promise<string> {
-    const messages: ChatMessage[] = [
-      { role: 'user', content: `Help me identify a marine species: ${description}.` }
-    ];
-    return this.sendMessage(messages);
+    return this.sendMessage([{ role: 'user', content: `Identify species: ${description}` }]);
   }
 
   async interpretEDNA(sampleData: string): Promise<string> {
-    const messages: ChatMessage[] = [
-      { role: 'user', content: `Interpret these eDNA results: ${sampleData}.` }
-    ];
-    return this.sendMessage(messages);
+    return this.sendMessage([{ role: 'user', content: `Interpret eDNA: ${sampleData}` }]);
   }
 
   async analyzeOceanConditions(conditions: string): Promise<string> {
-    const messages: ChatMessage[] = [
-      { role: 'user', content: `Analyze these ocean conditions: ${conditions}.` }
-    ];
-    return this.sendMessage(messages);
+    return this.sendMessage([{ role: 'user', content: `Analyze ocean conditions: ${conditions}` }]);
   }
 }
 
