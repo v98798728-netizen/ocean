@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
@@ -8,8 +7,8 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Proxy route for NVIDIA API
 app.post("/api/ai", async (req, res) => {
+  console.log("✅ Received request at /api/ai", req.body);
   try {
     const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
@@ -29,6 +28,6 @@ app.post("/api/ai", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend server running on http://0.0.0.0:${PORT}`);
 });
